@@ -1,14 +1,15 @@
 import { Link, redirect, useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 import { client, Wallpaper } from  "../../libs/Client";
+import Layout from "../../components/Layout";
 
 const getUrlPrev = (p) => `/?date=${p.date}&id=${p.id}&prev=1`
 const getUrlNext = (p) => `/?date=${p.date}&id=${p.id}`
 
 const Pagination = ({ pagination }) => (
-  <div className="mt-4 mb-16">
-    <Link to={getUrlPrev(pagination.prev)} className="rounded p-2 bg-slate-800 text-white">Prev</Link>
-    <Link to={getUrlNext(pagination.next)} className="rounded p-2 bg-slate-800 text-white">Next</Link>
+  <div className="my-4">
+    <Link to={getUrlPrev(pagination.prev)} className="rounded p-2 bg-slate-800 text-white hover:bg-slate-700">Prev</Link>
+    <Link to={getUrlNext(pagination.next)} className="rounded p-2 bg-slate-800 text-white hover:bg-slate-700 ml-2">Next</Link>
   </div>
 )
 
@@ -36,11 +37,11 @@ export default function Index() {
   const data = useLoaderData();
 
   return (
-    <div className="container mx-auto">
+    <Layout>
       <h1 className="text-3xl mb-2 text-white">Bing Wallpapers</h1>
       <WallpaperList wallpapers={data.wallpapers} />
       <Pagination pagination={data.pagination} />
-    </div>
+    </Layout>
   );
 }
 

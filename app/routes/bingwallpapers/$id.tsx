@@ -2,6 +2,7 @@ import { Link, MetaFunction, redirect, useLoaderData } from "remix";
 import type { LoaderFunction } from "remix";
 import { client, Wallpaper } from  "../../../libs/Client";
 import { Fragment } from "react";
+import Layout from "../../../components/Layout";
 
 export const loader: LoaderFunction = async ({ params }) => {
   const id = params.id;
@@ -26,10 +27,10 @@ export default function Index() {
   const data = useLoaderData();
 
   return (
-    <div className="container mx-auto">
+    <Layout>
       <h1 className="text-3xl mb-2 text-white">Bing Wallpapers</h1>
       <Wallpaper wallpaper={data.wallpaper} />
-    </div>
+    </Layout>
   );
 }
 
@@ -43,11 +44,11 @@ function Wallpaper({ wallpaper }: { wallpaper: Wallpaper }) {
   const { id, filename, title, copyright, date, tags } = wallpaper
   const t = Object.entries(tags).sort((a, b) => b[1] - a[1])
   const tagFields = t.map((l, i) => (
-    <Fragment key={i}><Link to={`/bingwallpapers/tags/${l[0]}`}><span className="rounded p-2 bg-slate-800 text-white leading-10">{l[0]}</span></Link> </Fragment>
+    <Fragment key={i}><Link to={`/bingwallpapers/tags/${l[0]}`}><span className="rounded p-2 leading-10 bg-slate-800 text-white hover:bg-slate-700">{l[0]}</span></Link> </Fragment>
   ))
 
   return (
-    <div className="">
+    <>
       <figure key={id} className="wallpaper relative">
         <Link to={`/bingwallpapers/${id}`}>
           <a title={title}>
@@ -63,6 +64,6 @@ function Wallpaper({ wallpaper }: { wallpaper: Wallpaper }) {
       </figure>
       <p className="text-gray-400">{copyright} - {intToDate(date)}</p>
       <p className="mt-4">{tagFields}</p>
-    </div>
+    </>
   )
 }
