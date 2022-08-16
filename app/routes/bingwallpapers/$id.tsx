@@ -1,5 +1,6 @@
-import { Link, MetaFunction, redirect, useLoaderData } from "remix";
-import type { LoaderFunction } from "remix";
+import { Link, useLoaderData } from "@remix-run/react";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { client, Wallpaper } from  "../../../libs/Client";
 import { Fragment } from "react";
 import Layout from "../../../components/Layout";

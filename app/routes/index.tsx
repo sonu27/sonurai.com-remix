@@ -1,6 +1,8 @@
-import { Link, redirect, useLoaderData } from "remix";
-import type { LoaderFunction } from "remix";
-import { client, Wallpaper } from  "../../libs/Client";
+import { Link, useLoaderData } from "@remix-run/react";
+import type { LoaderFunction } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
+import type { Wallpaper } from "../../libs/Client";
+import { client } from  "../../libs/Client";
 import Layout from "../../components/Layout";
 
 const getUrlPrev = (p) => `/?date=${p.date}&id=${p.id}&prev=1`
