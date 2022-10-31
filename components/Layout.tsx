@@ -1,25 +1,31 @@
 import { Link } from "@remix-run/react"
 
-const Layout = (props) => (
-  <div className="container mx-auto">
-    <Header />
-    {props.children}
-    <Footer />
-  </div>
-)
+export default function RootLayout({ children }: {
+  children: React.ReactNode;
+}) {
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
+  )
+}
   
 const Header = () => (
-  <nav className="" aria-label="navigation">
-    <Link to="/">Sonu Rai</Link>
-      <Link to="/bingwallpapers">Wallpapers</Link>
-      <Link to="/about">About</Link>
+  <nav className="flex items-center h-16 mx-2 md:mx-0" aria-label="navigation">
+    <Link to="/" className="text-xl text-white">
+      Sonu Rai
+    </Link>
+    <Link to="/" className="ml-4 text-gray-300 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md">
+      Wallpapers
+    </Link>
+    <Link to="/about" className="text-gray-300 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md">
+      About
+    </Link>
   </nav>
 )
 
 const Footer = () => (
-  <footer className="mt-4 mb-16 text-gray-400">
-    <div className="px-3 px-lg-0">&copy; 2013-{new Date().getFullYear()} Amarjeet Rai</div>
-  </footer>
+  <footer className="mt-4 mb-16 mx-2 md:mx-0 text-gray-400">&copy; 2013-{new Date().getFullYear()} Amarjeet Rai</footer>
 )
-  
-export default Layout

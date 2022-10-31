@@ -1,19 +1,9 @@
 import { Link, useLoaderData } from "@remix-run/react";
 import type { LoaderFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import type { Wallpaper } from "../../libs/Client";
 import { client } from  "../../libs/Client";
 import Layout from "../../components/Layout";
-
-const getUrlPrev = (p) => `/?date=${p.date}&id=${p.id}&prev=1`
-const getUrlNext = (p) => `/?date=${p.date}&id=${p.id}`
-
-const Pagination = ({ pagination }) => (
-  <div className="my-4">
-    <Link to={getUrlPrev(pagination.prev)} className="rounded p-2 bg-slate-800 text-white hover:bg-slate-700">Prev</Link>
-    <Link to={getUrlNext(pagination.next)} className="rounded p-2 bg-slate-800 text-white hover:bg-slate-700 ml-2">Next</Link>
-  </div>
-)
+import WallpaperList from "../../components/WallpaperList";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -34,37 +24,25 @@ export const loader: LoaderFunction = async ({ request }) => {
   return data;
 };
 
-
 export default function Index() {
   const data = useLoaderData();
 
   return (
     <Layout>
-      <h1 className="text-3xl mb-2 text-white">Bing Wallpapers</h1>
+      <h1 className="text-3xl mb-2 text-white mx-2 md:mx-0">Bing Wallpapers</h1>
       <WallpaperList wallpapers={data.wallpapers} />
       <Pagination pagination={data.pagination} />
     </Layout>
   );
 }
 
-function WallpaperList({ wallpapers }: { wallpapers: Wallpaper[]}) {
+function Pagination({ pagination }: any) {
+  const getUrlPrev = (p: any) => `/?date=${p.date}&id=${p.id}&prev=1`
+  const getUrlNext = (p: any) => `/?date=${p.date}&id=${p.id}`
   return (
-    <div className="columns-1 md:columns-2 lg:columns-3 gap-1">
-      {wallpapers.map(({ id, title, filename }) => (
-        <figure key={id} className="wallpaper relative">
-          <Link to={`/bingwallpapers/${id}`}>
-            <a title={title}>
-              <img
-                src={`https://images.sonurai.com/${filename}.jpg`}
-                width={1920}
-                height={1200}
-                alt={title}
-              />
-              <figcaption className="caption hidden absolute bottom-0 left-0 p-4 h-full w-full text-2xl bg-black bg-opacity-80 text-white">{title}</figcaption>
-            </a>
-          </Link>
-        </figure>
-      ))}
+    <div className="my-4 mx-2 md:mx-0">
+      <Link to={getUrlPrev(pagination.prev)} className="px-3 py-2 rounded-md bg-slate-800 text-gray-300 hover:bg-slate-700 hover:text-white">Prev</Link>
+      <Link to={getUrlNext(pagination.next)} className="px-3 py-2 rounded-md bg-slate-800 text-gray-300 hover:bg-slate-700 hover:text-white ml-1">Next</Link>
     </div>
   )
 }

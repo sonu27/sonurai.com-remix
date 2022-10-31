@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .wallpaper:hover .caption {
-    display: block;
+  display: block;
 }

@@ -1,13 +1,13 @@
+import { Fragment } from "react";
 import { Link, useLoaderData } from "@remix-run/react";
 import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { client, Wallpaper } from  "../../../libs/Client";
-import { Fragment } from "react";
+import { client } from  "../../../libs/Client";
 import Layout from "../../../components/Layout";
+import { intToDate } from '../../../libs/date'
 
 export const loader: LoaderFunction = async ({ params }) => {
   const id = params.id;
-
   if (!id) {
     return redirect("/")
   }
@@ -26,45 +26,26 @@ export const meta: MetaFunction = ({ data }) => {
 
 export default function Index() {
   const data = useLoaderData();
-
-  return (
-    <Layout>
-      <h1 className="text-3xl mb-2 text-white">Bing Wallpapers</h1>
-      <Wallpaper wallpaper={data.wallpaper} />
-    </Layout>
-  );
-}
-
-function intToDate(int) {
-  const datePattern = /^(\d{4})(\d{2})(\d{2})$/
-  const [, year, month, day] = datePattern.exec(int)
-  return `${year}-${month}-${day}`
-}
-
-function Wallpaper({ wallpaper }: { wallpaper: Wallpaper }) {
-  const { id, filename, title, copyright, date, tags } = wallpaper
-  const t = Object.entries(tags).sort((a, b) => b[1] - a[1])
+  const { id, filename, title, copyright, date, tags } = data.wallpaper;
+  const t = Object.entries(tags).sort((a: any, b: any) => b[1] - a[1])
   const tagFields = t.map((l, i) => (
-    <Fragment key={i}><Link to={`/bingwallpapers/tags/${l[0]}`}><span className="rounded p-2 leading-10 bg-slate-800 text-white hover:bg-slate-700">{l[0]}</span></Link> </Fragment>
+    <Fragment key={i}><Link to={`/bingwallpapers/tags/${l[0]}`} className="leading-10 whitespace-nowrap px-3 py-2 rounded-md bg-slate-800 text-gray-300 hover:bg-slate-700 hover:text-white">{l[0]}</Link> </Fragment>
   ))
 
   return (
-    <>
-      <figure key={id} className="wallpaper relative">
-        <Link to={`/bingwallpapers/${id}`}>
-          <a title={title}>
-            <img
-              src={`https://images.sonurai.com/${filename}.jpg`}
-              width={1920}
-              height={1200}
-              alt={title}
-            />
-            <figcaption className="caption text-2xl text-white">{title}</figcaption>
-          </a>
-        </Link>
-      </figure>
-      <p className="text-gray-400">{copyright} - {intToDate(date)}</p>
-      <p className="mt-4">{tagFields}</p>
-    </>
-  )
+    <Layout>
+      <Link to={`/bingwallpapers/${id}`} title={title}>
+        <img
+          className="img-fluid"
+          src={`https://images.sonurai.com/${filename}.jpg`}
+          width={1920}
+          height={1200}
+          alt={title}
+        />
+      </Link>
+      <h1 className="caption text-2xl text-white mx-2 md:mx-0">{title}</h1>
+      <p className="text-gray-400 mx-2 md:mx-0">{copyright} - {intToDate(date)}</p>
+      <p className="mt-2 mx-2 md:mx-0">{tagFields}</p>
+    </Layout>
+  );
 }
